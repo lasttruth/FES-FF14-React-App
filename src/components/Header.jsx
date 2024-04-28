@@ -1,53 +1,55 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import logo from '../assets/ff14icon.png'
 
 function Header() {
   return (
     <>
       <nav>
-        <a href="#">
-          <img id="site-logo" src="./assests/ff14icon.png" alt="" />
-        </a>
-        <ul class="nav__link--list">
-          <li class="nav__link">
-            <a class="nav__link--anchor link__hover--effect" href="#">
+        <Link to="/">
+          <img id="site-logo" src={logo} alt="" />
+        </Link>
+        <ul className="nav__link--list">
+          <li className="nav__link">
+            <Link className="nav__link--anchor link__hover--effect" to="/">
               Home
-            </a>
+            </Link>
           </li>
-          <li class="nav__link">
-            <a class="nav__link--anchor link__hover--effect" href="mounts.html">
+          <li className="nav__link">
+            <Link className="nav__link--anchor link__hover--effect" to="/">
               Find A Mount
-            </a>
+            </Link>
           </li>
-          <li class="nav__link">
-            <a class="nav__link--anchor link__hover--effect" href="#">
+          <li className="nav__link">
+            <Link className="nav__link--anchor link__hover--effect" to="/">
               Contact
-            </a>
+            </Link>
           </li>
         </ul>
 
-        <button class="btn__menu" onclick="openMenu()">
-          <i class="fas fa-bars"></i>
+        <button className="btn__menu" onclick="openMenu()">
+          <i className="fas fa-bars"></i>
         </button>
-        <div class="menu__backdrop">
-          <button class="btn__menu btn__menu--close" onclick="closeMenu()">
-            <i class="fas fa-times"></i>
+        <div className="menu__backdrop">
+          <button className="btn__menu btn__menu--close" onclick="closeMenu()">
+            <i className="fas fa-times"></i>
           </button>
 
-          <ul class="menu__links">
-            <li class="menu__list">
-              <a href="" class="menu__link" onclick="closeMenu()">
+          <ul className="menu__links">
+            <li className="menu__list">
+              <Link className="menu__link" onclick="closeMenu()">
                 Home
-              </a>
+              </Link>
             </li>
-            <li class="menu__list">
-              <a href="mounts.html" class="menu__link" onclick="closeMenu()">
+            <li className="menu__list">
+              <Link className="menu__link" onclick="closeMenu()">
                 Find A Mount
-              </a>
+              </Link>
             </li>
-            <li class="menu__list">
-              <a href="" class="menu__link no-cursor">
+            <li className="menu__list">
+              <Link className="menu__link no-cursor" to="">
                 Contacts
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

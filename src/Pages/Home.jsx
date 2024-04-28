@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Home() {
   return (
@@ -18,9 +19,9 @@ function Home() {
                 quests and events to hidden vendors – ensuring a swift and
                 stylish ride across Eorzea.
               </p>
-              <a class="hs__btn" href="mounts.html">
+              <Link class="hs__btn" href="mounts.html">
                 Search Here
-              </a>
+              </Link>
             </div>
           </div>
         </div>

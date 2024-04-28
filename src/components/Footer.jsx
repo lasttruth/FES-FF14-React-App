@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -7,15 +8,15 @@ function Footer() {
         <div class="container">
           <div class="row">
             <div class="footer__list">
-              <a href="#" class="footer__link">
+              <Link to="/" class="footer__link">
                 Home
-              </a>
-              <a href="#" class="footer__link">
+              </Link>
+              <Link to="#" class="footer__link">
                 Mounts
-              </a>
-              <a href="#" class="footer__link">
+              </Link>
+              <Link to="#" class="footer__link">
                 Contact
-              </a>
+              </Link>
             </div>
             <div class="footer__copyright">
               Copyright &copy; 2023 FFXIV Collectors

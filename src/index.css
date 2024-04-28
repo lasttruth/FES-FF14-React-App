@@ -67,7 +67,7 @@ nav {
 }
 
 .landing__background--img {
-  /*background-image: url(./assests/FF14FC.png);*/
+  background-image: url(./assets/FF14FC.png);
   height: 100vh;
   width: 100%;
   background-repeat: no-repeat;
