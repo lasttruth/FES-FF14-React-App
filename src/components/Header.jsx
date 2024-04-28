@@ -1,8 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import logo from '../assets/ff14icon.png'
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 function Header() {
+
+    function openMenu(){
+        document.body.classList += " menu--open"
+    }
+    
+    function closeMenu(){
+        document.body.classList.remove('menu--open')
+    }
+
   return (
     <>
       <nav>
@@ -27,17 +38,17 @@ function Header() {
           </li>
         </ul>
 
-        <button className="btn__menu" onclick="openMenu()">
-          <i className="fas fa-bars"></i>
+        <button className="btn__menu" onClick={() => openMenu()}>
+          <FontAwesomeIcon icon={faBars} className="fas fa-bars"/>
         </button>
         <div className="menu__backdrop">
-          <button className="btn__menu btn__menu--close" onclick="closeMenu()">
-            <i className="fas fa-times"></i>
+          <button className="btn__menu btn__menu--close" onClick={() => closeMenu()}>
+            < FontAwesomeIcon icon={faTimes} className="fas fa-times"/>
           </button>
 
           <ul className="menu__links">
             <li className="menu__list">
-              <Link className="menu__link" onclick="closeMenu()">
+              <Link to='/' className="menu__link" onclick="closeMenu()">
                 Home
               </Link>
             </li>
