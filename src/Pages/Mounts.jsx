@@ -1,63 +1,109 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import typeicon from '../assets/ff14icon.png'
+import Mount from "../components/Mount";
+import MountFilter from "../components/MountFilter";
+import Searchbar from "../UI/Searchbar";
 //import { useParams } from "react-router-dom";
 
 function Mounts() {
   //const { id } = useParams;
   const [mounts, setMounts] = useState([]);
+  const [filteredMounts, setFilteredMounts] = useState([]);
+  const [fitlerTitle, setFilterTitle] = useState("All Mounts");
+  const [displayCount, setDisplayCount] = useState(20);
 
   async function fetchMounts() {
     const { data } = await axios.get("https://ffxivcollect.com/api/mounts");
-    console.log(data.results);
     setMounts(data.results);
+    setFilteredMounts(data.results);
   }
 
   useEffect(() => {
     fetchMounts();
   }, []);
 
+  const filterMounts = (filter) => {
+    const expansions = {
+      ARR: { min: 2.0, max: 3.0, title: "A Realm Reborn" },
+      HW: { min: 3.0, max: 4.0, title: "Heavensward" },
+      SB: { min: 4.0, max: 5.0, title: "Stormblood" },
+      ShB: { min: 5.0, max: 6.0, title: "Shadowbringers" },
+      EW: { min: 6.0, max: 7.0, title: "Endwalker" },
+    };
+
+    if (filter in expansions) {
+      const { min, max, title } = expansions[filter];
+      const filtered = mounts
+        .filter((mount) => {
+          const patch = parseFloat(mount.patch);
+          return patch >= min && patch < max;
+        })
+        .sort((a, b) => {
+          const patchA = parseFloat(a.patch);
+          const patchB = parseFloat(b.patch);
+          return patchA - patchB;
+        });
+      setFilteredMounts(filtered);
+      setFilterTitle(title);
+    } else {
+      setFilteredMounts(mounts);
+      setFilterTitle("All Mounts");
+    }
+  };
+
+  const handleFilterChange = (filter) => {
+    filterMounts(filter);
+  };
+
+  const handleShowMore = () => {
+    setDisplayCount(displayCount + 20);
+  };
+
+  async function handleSearch(query) {
+    try {
+      const { data } = await axios.get(
+        `https://ffxivcollect.com/api/mounts?name_en_end=${query}`
+      );
+
+      if (data.results.length === 0) {
+        setFilteredMounts([]);
+        setFilterTitle("No results found");
+      } else {
+        setFilteredMounts(data.results);
+        setFilterTitle("Search Results");
+      }
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+      // Handle error gracefully, e.g., display an error message
+    }
+  }
+
   return (
     <>
       <div className="container">
         <div className="row">
           <div className="mounts__header">
-            <div>
-              <h2 className="mounts__header--title">
-                All <span className="secondary"> Mounts </span>
-              </h2>
-            </div>
+            <h2 class="mounts__header--title">
+              {fitlerTitle} <span class="secondary"> Mounts </span>
+            </h2>
+            <MountFilter onFilterChange={handleFilterChange} />
           </div>
-          {/* {<div className="mounts__list"></div>} */}
+          <Searchbar onSearch={handleSearch} />
           <div className="mounts__list">
-            {mounts.map((mount) => (
-              <div className="mounts__card">
-                <figure className="mounts__img--wrapper">
-                  <img className="mounts__img" src={mount.image} alt="" />
-                </figure>
-                <div className="mounts__content--wrapper">
-                  <div className="mounts__content">
-                    <h4 className="mounts__title">{mount.name}</h4>
-                    <div className="mounts__source--wrapper">
-                      <img
-                        className="mounts__source--img"
-                        src={typeicon}
-                        alt=""
-                      />
-                      <p className="mounts__source">{mount.sources[0].type}</p>
-                    </div>
-                    <div className="mounts__tags">
-                      <p className="mounts__patch">Patch:{mount.patch}</p>
-                      <p className="mounts__owners">{mount.owned}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            {filteredMounts.slice(0, displayCount).map((mount) => (
+              <Mount mount={mount} key={mount.id} />
             ))}
-            <div className="button__wrapper">
-              <button className="show-more button__arrow">Show More!</button>
-            </div>
           </div>
+            {displayCount < filteredMounts.length && (
+              <div className="button__wrapper">
+                <button
+                  className="show-more button__arrow"
+                  onClick={handleShowMore}
+                >
+                  Show More!
+                </button>
+              </div>
+            )}
         </div>
       </div>
     </>
