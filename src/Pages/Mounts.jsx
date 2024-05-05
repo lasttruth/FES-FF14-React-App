@@ -3,19 +3,24 @@ import React, { useEffect, useState } from "react";
 import Mount from "../components/Mount";
 import MountFilter from "../components/MountFilter";
 import Searchbar from "../UI/Searchbar";
-//import { useParams } from "react-router-dom";
+import MountSkeleton from "../UI/MountSkeleton";
 
 function Mounts() {
-  //const { id } = useParams;
   const [mounts, setMounts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [filteredMounts, setFilteredMounts] = useState([]);
   const [fitlerTitle, setFilterTitle] = useState("All Mounts");
   const [displayCount, setDisplayCount] = useState(20);
 
   async function fetchMounts() {
-    const { data } = await axios.get("https://ffxivcollect.com/api/mounts");
-    setMounts(data.results);
-    setFilteredMounts(data.results);
+    try {
+      const { data } = await axios.get("https://ffxivcollect.com/api/mounts");
+      setMounts(data.results);
+      setFilteredMounts(data.results);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching mounts:", error);
+    }
   }
 
   useEffect(() => {
@@ -90,20 +95,24 @@ function Mounts() {
           </div>
           <Searchbar onSearch={handleSearch} />
           <div className="mounts__list">
-            {filteredMounts.slice(0, displayCount).map((mount) => (
-              <Mount mount={mount} key={mount.id} />
-            ))}
+            {loading
+              ? Array.from({ length: 10 }).map((_, index) => (
+                  <MountSkeleton key={index} />
+                ))
+              : filteredMounts
+                  .slice(0, displayCount)
+                  .map((mount) => <Mount  mount={mount} key={mount.id} />)}
           </div>
-            {displayCount < filteredMounts.length && (
-              <div className="button__wrapper">
-                <button
-                  className="show-more button__arrow"
-                  onClick={handleShowMore}
-                >
-                  Show More!
-                </button>
-              </div>
-            )}
+          {displayCount < filteredMounts.length && (
+            <div className="button__wrapper">
+              <button
+                className="show-more button__arrow"
+                onClick={handleShowMore}
+              >
+                Show More!
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>

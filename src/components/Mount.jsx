@@ -1,11 +1,13 @@
 import React from "react";
 import typeicon from "../assets/ff14icon.png";
+import { useNavigate } from "react-router-dom";
 
 function Mount({ mount }) {
-    
+    let navigate = useNavigate();
+
   return (
     <>
-      <div className="mounts__card">
+      <div onClick={() => navigate(`/mounts/${mount.id}`)} className="mounts__card">
         <figure className="mounts__img--wrapper">
           <img className="mounts__img" src={mount.image} alt="" />
         </figure>

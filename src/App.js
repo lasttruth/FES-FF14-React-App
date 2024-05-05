@@ -3,6 +3,7 @@ import Home from "./Pages/Home";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Mounts from "./Pages/Mounts";
+import MountInfo from "./Pages/MountInfo";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="mounts" element={<Mounts/>}></Route>
+          <Route path='/mounts/:id' element={<MountInfo/>}></Route>
         </Routes>
         <Footer />
       </div>
