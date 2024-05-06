@@ -1,7 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Searchbar from "../UI/Searchbar";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
+
+  const handleSearchFromHome = (query) => {
+    if (query.trim() !== "") {
+      // Redirect to the mounts page with the search query
+      navigate(`/mounts?name_en_end=${query}`);
+    } else {
+      // Redirect to the mounts page without the search query
+      navigate("/mounts");
+    }
+  }
   return (
     <>
       <header className="header_section">
@@ -19,9 +31,7 @@ function Home() {
                 quests and events to hidden vendors – ensuring a swift and
                 stylish ride across Eorzea.
               </p>
-              <Link className="hs__btn" to='mounts'>
-                Search Here
-              </Link>
+              <Searchbar onSearch={handleSearchFromHome} />
             </div>
           </div>
         </div>

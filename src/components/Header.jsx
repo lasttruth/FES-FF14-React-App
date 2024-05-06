@@ -27,7 +27,7 @@ function Header() {
             </Link>
           </li>
           <li className="nav__link">
-            <Link className="nav__link--anchor link__hover--effect" to="/">
+            <Link className="nav__link--anchor link__hover--effect" to="mounts">
               Find A Mount
             </Link>
           </li>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import typeicon from "../assets/ff14icon.png";
 import axios from "axios";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 function Mountsmount() {
   const [mount, setMounts] = useState([]);

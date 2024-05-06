@@ -98,6 +98,9 @@ input {
   padding-left: 8px;
 }
 
+input::-webkit-search-cancel-button{
+  display: none;
+}
 /*
 *
 * NAV

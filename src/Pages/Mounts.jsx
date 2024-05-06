@@ -4,6 +4,7 @@ import Mount from "../components/Mount";
 import MountFilter from "../components/MountFilter";
 import Searchbar from "../UI/Searchbar";
 import MountSkeleton from "../UI/MountSkeleton";
+import { useLocation } from "react-router-dom";
 
 function Mounts() {
   const [mounts, setMounts] = useState([]);
@@ -11,6 +12,9 @@ function Mounts() {
   const [filteredMounts, setFilteredMounts] = useState([]);
   const [fitlerTitle, setFilterTitle] = useState("All Mounts");
   const [displayCount, setDisplayCount] = useState(20);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const query = searchParams.get("name_en_end");
 
   async function fetchMounts() {
     try {
@@ -26,6 +30,15 @@ function Mounts() {
   useEffect(() => {
     fetchMounts();
   }, []);
+
+  useEffect(() => {
+    if (query) {
+      handleSearch(query);
+    } else {
+      setFilteredMounts(mounts);
+      setFilterTitle("All Mounts");
+    }
+  }, [query, mounts]);
 
   const filterMounts = (filter) => {
     const expansions = {
