@@ -622,37 +622,37 @@ Skeleton State
 /* Skeleton State */
 
 .skeleton-mounts__card {
-  background-color: #484a4e; /* Match the background color of mounts__card */
-  border: 4px solid #d8b371; /* Match the border style of mounts__card */
-  border-radius: 4px; /* Match the border radius of mounts__card */
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.8); /* Match the box shadow of mounts__card */
-  margin: 16px auto; /* Match the margin of mounts__card */
-  padding: 16px; /* Match the padding of mounts__card */
-  width: 24%; /* Match the width of mounts__card */
+  background-color: #484a4e; 
+  border: 4px solid #d8b371; 
+  border-radius: 4px; 
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.8); 
+  margin: 16px auto; 
+  padding: 16px; 
+  width: 24%; 
 }
 
 .skeleton-mounts__img--wrapper {
-  margin-bottom: 8px; /* Match the margin bottom of mounts__img--wrapper */
-  border-radius: 4px; /* Match the border radius of mounts__img--wrapper */
+  margin-bottom: 8px; 
+  border-radius: 4px; 
   overflow: hidden;
   display: flex;
 }
 
 .skeleton-mounts__img {
-  max-height: 380px; /* Match the max height of mounts__img */
+  max-height: 380px; 
   object-fit: contain;
   object-position: center;
 }
 
 .skeleton-mounts__content--wrapper {
-  width: 100%; /* Match the width of mounts__content--wrapper */
-  background-color: #484a4e; /* Match the background color of mounts__content--wrapper */
-  border: 2px solid #131313; /* Match the border style of mounts__content--wrapper */
-  box-shadow: 0 4px 8px 4px rgba(0, 0, 0, 0.2); /* Match the box shadow of mounts__content--wrapper */
+  width: 100%; 
+  background-color: #484a4e; 
+  border: 2px solid #131313; 
+  box-shadow: 0 4px 8px 4px rgba(0, 0, 0, 0.2); 
 }
 
 .skeleton-mounts__content {
-  padding: 2px 16px; /* Match the padding of mounts__content */
+  padding: 2px 16px; 
   display: flex;
   flex-direction: column;
 }
@@ -661,10 +661,10 @@ Skeleton State
 .skeleton-mounts__source,
 .skeleton-mounts__patch,
 .skeleton-mounts__owners {
-  width: 100%; /* Match the width of mounts__title, mounts__source, mounts__patch, mounts__owners */
-  height: 20px; /* Match the height of mounts__title, mounts__source, mounts__patch, mounts__owners */
-  margin-bottom: 10px; /* Match the margin bottom of mounts__title, mounts__source, mounts__patch, mounts__owners */
-  background-color: #f3f3f3; /* Light gray */
+  width: 100%; 
+  height: 20px; 
+  margin-bottom: 10px; 
+  background-color: #f3f3f3; 
 }
 
 /* Animation for skeleton loading text */
@@ -725,6 +725,7 @@ Small phones, tablets, large smartphones
   .mounts__header {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
   }
 
   .mounts__header form {
@@ -748,12 +749,11 @@ Small phones, tablets, large smartphones
     text-align: center;
     padding: 0 4px;
   }
-  .user-panel {
-    display: none;
-  }
+  
 
   select {
-    margin-bottom: 8px;
+    margin-bottom: 4px;
+    margin-left: 12px;
   }
 
   form {

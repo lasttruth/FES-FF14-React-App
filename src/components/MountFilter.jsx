@@ -9,12 +9,8 @@ function MountFilter({ onFilterChange }) {
     onFilterChange(value);
   };
 
- 
-
   return (
     <>
-      
-
       <select
         name=""
         id="filter"
@@ -24,6 +20,7 @@ function MountFilter({ onFilterChange }) {
         <option value="" disabled selected>
           Expansion
         </option>
+        <option value="ALL">ALL</option>
         <option value="ARR">A Realm Reborn</option>
         <option value="HW">Heavensward</option>
         <option value="SB">Stormblood</option>

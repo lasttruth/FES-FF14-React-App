@@ -4,7 +4,7 @@ import Mount from "../components/Mount";
 import MountFilter from "../components/MountFilter";
 import Searchbar from "../UI/Searchbar";
 import MountSkeleton from "../UI/MountSkeleton";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Mounts() {
   const [mounts, setMounts] = useState([]);
@@ -15,6 +15,7 @@ function Mounts() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get("name_en_end");
+  const navigate = useNavigate();
 
   async function fetchMounts() {
     try {
@@ -36,7 +37,7 @@ function Mounts() {
       handleSearch(query);
     } else {
       setFilteredMounts(mounts);
-      setFilterTitle("All Mounts");
+      setFilterTitle("All ");
     }
   }, [query, mounts]);
 
@@ -47,6 +48,11 @@ function Mounts() {
       SB: { min: 4.0, max: 5.0, title: "Stormblood" },
       ShB: { min: 5.0, max: 6.0, title: "Shadowbringers" },
       EW: { min: 6.0, max: 7.0, title: "Endwalker" },
+    };
+
+    const defaultFilter = {
+      ALL: "All", // Default filter option
+      title: "All" , // Default filter title
     };
 
     if (filter in expansions) {
@@ -63,9 +69,12 @@ function Mounts() {
         });
       setFilteredMounts(filtered);
       setFilterTitle(title);
+    } else if (filter in defaultFilter) {
+      setFilteredMounts(mounts);
+      setFilterTitle("All");
     } else {
       setFilteredMounts(mounts);
-      setFilterTitle("All Mounts");
+      setFilterTitle("All");
     }
   };
 
@@ -96,6 +105,11 @@ function Mounts() {
     }
   }
 
+  //to change the URL to avoid a refresh bug
+  const showSearchResults = (query) => {
+    navigate(`/mounts?name_en_end=${query}`);
+  };
+
   return (
     <>
       <div className="container">
@@ -106,7 +120,7 @@ function Mounts() {
             </h2>
             <MountFilter onFilterChange={handleFilterChange} />
           </div>
-          <Searchbar onSearch={handleSearch} />
+          <Searchbar onSearch={showSearchResults} />
           <div className="mounts__list">
             {loading
               ? Array.from({ length: 10 }).map((_, index) => (
@@ -114,7 +128,7 @@ function Mounts() {
                 ))
               : filteredMounts
                   .slice(0, displayCount)
-                  .map((mount) => <Mount  mount={mount} key={mount.id} />)}
+                  .map((mount) => <Mount mount={mount} key={mount.id} />)}
           </div>
           {displayCount < filteredMounts.length && (
             <div className="button__wrapper">
