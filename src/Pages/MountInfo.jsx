@@ -27,8 +27,6 @@ function Mountsmount() {
     }
   }
 
-  
-
   useEffect(() => {
     renderMounts();
   }, [id]);
@@ -82,7 +80,14 @@ function Mountsmount() {
                   <dd>
                     <div className="sources">
                       <img className="sources__img" src={typeicon} alt="" />
-                      <Link className="mount__link">
+                      <Link
+                        to={
+                          mount.sources && mount.sources.length > 0
+                            ? `https://www.google.com/search?q=${mount.sources[0].text}`
+                            : ""
+                        }
+                        className="mount__link"
+                      >
                         {mount.sources && mount.sources.length > 0
                           ? mount.sources[0].text
                           : "Source not available"}
