@@ -26,6 +26,7 @@ function MountFilter({ onFilterChange }) {
         <option value="SB">Stormblood</option>
         <option value="ShB">Shadowbringers</option>
         <option value="EW">Endwalker</option>
+        <option value="DT">Dawntrail</option>
       </select>
     </>
   );

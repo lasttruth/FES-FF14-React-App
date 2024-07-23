@@ -48,6 +48,7 @@ function Mounts() {
       SB: { min: 4.0, max: 5.0, title: "Stormblood" },
       ShB: { min: 5.0, max: 6.0, title: "Shadowbringers" },
       EW: { min: 6.0, max: 7.0, title: "Endwalker" },
+      DT: {min: 7.0, max: 8.0, title: "Dawntrail"}
     };
 
     const defaultFilter = {
