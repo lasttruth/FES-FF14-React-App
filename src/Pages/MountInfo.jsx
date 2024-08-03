@@ -5,7 +5,7 @@ import axios from "axios";
 
 function Mountsmount() {
   const [mount, setMounts] = useState([]);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying] = useState(false);
   const { id } = useParams();
 
   async function renderMounts() {
@@ -76,7 +76,7 @@ function Mountsmount() {
                       <dd>{mount.patch}</dd>
                     </div>
                   </div>
-                  <dt>Source</dt>
+                  <h3 className="mount__source">Where to get:</h3>
                   <dd>
                     <div className="sources">
                       <img className="sources__img" src={typeicon} alt="" />
@@ -86,6 +86,8 @@ function Mountsmount() {
                             ? `https://www.google.com/search?q=${mount.sources[0].text}`
                             : ""
                         }
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="mount__link"
                       >
                         {mount.sources && mount.sources.length > 0
@@ -95,16 +97,16 @@ function Mountsmount() {
                     </div>
                   </dd>
 
-                  <dt>Description</dt>
+                  <h3 className="mount__source">Description:</h3>
                   <dd>{mount.description}</dd>
-                  <dt>Journal</dt>
+                  <h3 className="mount__source">Journal:</h3>
                   <dd>{mount.enhanced_description}</dd>
-                  <div>
+                  <div className="mount__music">
                     {!mount.bgm ? (
-                      <dt>No Music Preview.</dt>
+                      <h3 className="mount__source">No Music Preview.</h3>
                     ) : (
                       <>
-                        <dt>Music Preview:</dt>
+                        <h3 className="mount__source">Music Preview:</h3>
                         <audio
                           src={mount.bgm}
                           controls={true}

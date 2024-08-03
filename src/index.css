@@ -8,7 +8,6 @@
 body {
   background-color: #282a2e;
   position: relative;
-  overflow-x: hidden;
 }
 
 a {
@@ -42,6 +41,12 @@ nav {
   height: 100px;
   background-color: #131313;
   border-bottom: 2px solid #d8b371;
+}
+
+.container,
+.row {
+  height: 100%;
+  overflow: hidden;
 }
 
 .container {
@@ -98,7 +103,7 @@ input {
   padding-left: 8px;
 }
 
-input::-webkit-search-cancel-button{
+input::-webkit-search-cancel-button {
   display: none;
 }
 /*
@@ -478,7 +483,7 @@ select {
 *
 *
 *
-Mount Page
+Mount Info Page
 *
 *
 */
@@ -561,7 +566,8 @@ Mount Page
   font-size: 20px;
 }
 
-dt {
+dt,
+.mount__source {
   padding-top: 12px;
   margin-bottom: 16px;
 }
@@ -569,6 +575,10 @@ dt {
 dt,
 dd {
   color: #fff;
+}
+
+.mount__source {
+  color: #d8b371;
 }
 
 .mount__stats--wrapper dt {
@@ -622,37 +632,37 @@ Skeleton State
 /* Skeleton State */
 
 .skeleton-mounts__card {
-  background-color: #484a4e; 
-  border: 4px solid #d8b371; 
-  border-radius: 4px; 
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.8); 
-  margin: 16px auto; 
-  padding: 16px; 
-  width: 24%; 
+  background-color: #484a4e;
+  border: 4px solid #d8b371;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.8);
+  margin: 16px auto;
+  padding: 16px;
+  width: 24%;
 }
 
 .skeleton-mounts__img--wrapper {
-  margin-bottom: 8px; 
-  border-radius: 4px; 
+  margin-bottom: 8px;
+  border-radius: 4px;
   overflow: hidden;
   display: flex;
 }
 
 .skeleton-mounts__img {
-  max-height: 380px; 
+  max-height: 380px;
   object-fit: contain;
   object-position: center;
 }
 
 .skeleton-mounts__content--wrapper {
-  width: 100%; 
-  background-color: #484a4e; 
-  border: 2px solid #131313; 
-  box-shadow: 0 4px 8px 4px rgba(0, 0, 0, 0.2); 
+  width: 100%;
+  background-color: #484a4e;
+  border: 2px solid #131313;
+  box-shadow: 0 4px 8px 4px rgba(0, 0, 0, 0.2);
 }
 
 .skeleton-mounts__content {
-  padding: 2px 16px; 
+  padding: 2px 16px;
   display: flex;
   flex-direction: column;
 }
@@ -661,10 +671,10 @@ Skeleton State
 .skeleton-mounts__source,
 .skeleton-mounts__patch,
 .skeleton-mounts__owners {
-  width: 100%; 
-  height: 20px; 
-  margin-bottom: 10px; 
-  background-color: #f3f3f3; 
+  width: 100%;
+  height: 20px;
+  margin-bottom: 10px;
+  background-color: #f3f3f3;
 }
 
 /* Animation for skeleton loading text */
@@ -749,7 +759,6 @@ Small phones, tablets, large smartphones
     text-align: center;
     padding: 0 4px;
   }
-  
 
   select {
     margin-bottom: 4px;
@@ -788,8 +797,21 @@ Small phones, tablets, large smartphones
   .mounts__card {
     width: 100%;
   }
+  /*
+  *
+  mountinfo
+  *
+  */
+  #mount .container {
+    padding: 16px 0;
+  }
+  .mount__wrapper {
+    align-items: center;
+    padding-left: 8px;
+    font-size: 14px;
+  }
 
-  .mount__img-wrapper {
+  .mount__img--wrapper {
     display: none;
   }
 
@@ -800,5 +822,11 @@ Small phones, tablets, large smartphones
   .mounts__header {
     display: flex;
     flex-direction: column;
+  }
+
+  .mount__music{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }

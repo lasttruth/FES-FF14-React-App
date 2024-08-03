@@ -1,19 +1,22 @@
 import React from "react";
 import typeicon from "../assets/ff14icon.png";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Mount({ mount }) {
-    let navigate = useNavigate();
+    
 
   return (
     <>
-      <div onClick={() => navigate(`/mounts/${mount.id}`)} className="mounts__card">
+    
+      <div className="mounts__card">
         <figure className="mounts__img--wrapper">
           <img className="mounts__img" src={mount.image} alt="" />
         </figure>
         <div className="mounts__content--wrapper">
           <div className="mounts__content">
+            <Link to={`/mounts/${mount.id}`} className="link__hover--effect">
             <h4 className="mounts__title">{mount.name}</h4>
+            </Link>
             <div className="mounts__source--wrapper">
               <img className="mounts__source--img" src={typeicon} alt="" />
               <p className="mounts__source">{mount.sources[0].type}</p>
