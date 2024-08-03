@@ -68,7 +68,7 @@ function Mountsmount() {
                       <dd>{mount.seats}</dd>
                     </div>
                     <div>
-                      <dt>Owned?</dt>
+                      <dt>% Owned</dt>
                       <dd>{mount.owned}</dd>
                     </div>
                     <div>

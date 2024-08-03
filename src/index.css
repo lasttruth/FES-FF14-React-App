@@ -4,6 +4,10 @@
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
 }
+html,
+body {
+  overflow-x: hidden;
+}
 
 body {
   background-color: #282a2e;
@@ -769,6 +773,23 @@ Small phones, tablets, large smartphones
     height: 36px;
   }
 
+  .mount__wrapper {
+    flex-direction: column-reverse;
+    align-items: center;
+    padding-left: 8px;
+    font-size: 14px;
+  }
+
+  .mount__stats--wrapper{
+    justify-content: center;
+  }
+
+  .mount__music {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   dd,
   dt {
     padding: 4px;
@@ -822,11 +843,5 @@ Small phones, tablets, large smartphones
   .mounts__header {
     display: flex;
     flex-direction: column;
-  }
-
-  .mount__music{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
 }
