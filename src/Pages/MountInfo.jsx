@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import typeicon from "../assets/ff14icon.png";
 import axios from "axios";
+import { getRarity } from "../utils/rarity";
 
 function Mountsmount() {
   const [mount, setMount] = useState(null);
@@ -27,7 +28,22 @@ function Mountsmount() {
     renderMounts();
   }, [id]);
 
-  if (loading || !mount) return null;
+  // 1. DATA GUARD: This must come BEFORE any rarity logic
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#050505] flex items-center justify-center">
+        <div className="text-blue-500 animate-pulse font-black uppercase tracking-widest">
+          Loading Intel...
+        </div>
+      </div>
+    );
+  }
+
+  // 2. ADDITIONAL GUARD: If mount is still null after loading, don't crash
+  if (!mount) return null;
+
+  // 3. NOW define rarity (Safe because mount is guaranteed to exist here)
+  const rarity = getRarity(mount.owned);
 
   return (
     <main className="min-h-screen bg-[#050505] text-slate-100 p-6 lg:p-12 relative overflow-hidden font-sans flex justify-center">
@@ -68,48 +84,74 @@ function Mountsmount() {
                   />
                 </div>
                 <div>
-                  <div className="min-w-0">
-                    <h1 className="text-5xl lg:text-7xl font-black uppercase tracking-tighter leading-none mb-2 italic">
-                      {mount.name}
-                    </h1>
-                    <div className="flex gap-3">
-                      <span className="text-[10px] bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full border border-blue-500/30 font-black tracking-widest uppercase">
-                        Patch {mount.patch}
-                      </span>
-                      <span className="text-[10px] bg-white/5 text-slate-400 px-3 py-1 rounded-full border border-white/10 font-black tracking-widest uppercase">
-                        {mount.movement}
-                      </span>
-                    </div>
+                  <h1 className="text-4xl lg:text-7xl font-black uppercase tracking-tighter leading-none mb-2 italic">
+                    {mount.name}
+                  </h1>
+                  <div className="flex flex-wrap gap-3 mt-4">
+                    {/* High-visibility Rarity Badge */}
+                    <span
+                      className={`text-[10px] bg-gradient-to-r ${rarity.color} text-white px-3 py-1 rounded-full font-black tracking-widest uppercase shadow-lg shadow-orange-500/20`}
+                    >
+                      {rarity.label}
+                    </span>
+
+                    <span className="text-[10px] bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full border border-blue-500/30 font-black tracking-widest uppercase">
+                      Patch {mount.patch}
+                    </span>
+                    <span className="text-[10px] bg-white/5 text-slate-400 px-3 py-1 rounded-full border border-white/10 font-black tracking-widest uppercase">
+                      {mount.movement}
+                    </span>
                   </div>
                 </div>
               </div>
 
               {/* Seamless Stats Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 border-t border-white/5 mt-8 pt-8 gap-4">
-                {[
-                  { label: "Capacity", value: `${mount.seats} Seat` },
-                  {
-                    label: "Marketable",
-                    value: mount.tradeable ? "Yes" : "No",
-                  },
-                  {
-                    label: "Global Rarity",
-                    value: mount.owned,
-                    color: "text-blue-400",
-                  },
-                  { label: "Collection ID", value: `#${mount.id}` },
-                ].map((stat, i) => (
-                  <div key={i}>
-                    <p className="text-[9px] uppercase tracking-[0.3em] text-slate-500 font-black mb-1">
-                      {stat.label}
+              <div className="grid grid-cols-2 md:grid-cols-4 border-t border-white/5 mt-8 pt-8 gap-8">
+                {/* Capacity */}
+                <div>
+                  <p className="text-[9px] uppercase tracking-[0.3em] text-slate-500 font-black mb-1 italic">
+                    Capacity
+                  </p>
+                  <p className="text-xl font-bold text-white">
+                    {mount.seats} Person
+                  </p>
+                </div>
+
+                {/* Marketable */}
+                <div>
+                  <p className="text-[9px] uppercase tracking-[0.3em] text-slate-500 font-black mb-1 italic">
+                    Marketable
+                  </p>
+                  <p className="text-xl font-bold text-white">
+                    {mount.tradeable ? "Yes" : "No"}
+                  </p>
+                </div>
+
+                {/* Ownership with Progress Bar */}
+                <div className="min-w-0">
+                  <p className="text-[9px] uppercase tracking-[0.3em] text-blue-400 font-black mb-1 italic">
+                    Ownership
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <p className="text-xl font-bold text-white">
+                      {mount.owned}
                     </p>
-                    <p
-                      className={`text-xl font-bold ${stat.color || "text-white"}`}
-                    >
-                      {stat.value}
-                    </p>
+                    <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full bg-gradient-to-r ${rarity.color}`}
+                        style={{ width: mount.owned }}
+                      />
+                    </div>
                   </div>
-                ))}
+                </div>
+
+                {/* Collection ID */}
+                <div className="text-right">
+                  <p className="text-[9px] uppercase tracking-[0.3em] text-slate-500 font-black mb-1 italic">
+                    Collection ID
+                  </p>
+                  <p className="text-xl font-bold text-white">#{mount.id}</p>
+                </div>
               </div>
             </div>
 
