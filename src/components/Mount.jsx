@@ -1,33 +1,62 @@
+// src/components/Mount.jsx
 import React from "react";
 import typeicon from "../assets/ff14icon.png";
 import { Link } from "react-router-dom";
 
 function Mount({ mount }) {
   return (
-    <>
-      <div className="mounts__card">
-        <figure className="mounts__img--wrapper">
-          <img className="mounts__img" src={mount.image} alt="" />
-        </figure>
-        <div className="mounts__content--wrapper">
-          <div className="mounts__content">
-            <Link to={`/mounts/${mount.id}`} className="link__hover--effect">
-              <h4 className="mounts__title">{mount.name}</h4>
-            </Link>
-            <div className="mounts__source--wrapper">
-              <img className="mounts__source--img" src={typeicon} alt="" />
-              <p className="mounts__source">
-                {mount.sources?.[0]?.type || "Unknown Source"}
-              </p>
-            </div>
-            <div className="mounts__tags">
-              <p className="mounts__patch">Patch:{mount.patch}</p>
-              <p className="mounts__owners">{mount.owned}</p>
-            </div>
+    <Link
+      to={`/mounts/${mount.id}`}
+      className="group block bg-white/[0.03] backdrop-blur-lg border border-white/10 rounded-[2rem] overflow-hidden hover:border-blue-500/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl"
+    >
+      <figure className="relative aspect-video overflow-hidden">
+        <img
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          src={mount.image}
+          alt={mount.name}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
+
+        {/* Patch Badge on Image */}
+        <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full">
+          <p className="text-[10px] font-black uppercase tracking-widest text-blue-400">
+            P-{mount.patch}
+          </p>
+        </div>
+      </figure>
+
+      <div className="p-6 space-y-4">
+        <div className="flex items-center gap-3">
+          <img
+            className="w-5 h-5 opacity-50 brightness-200"
+            src={typeicon}
+            alt=""
+          />
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 truncate">
+            {mount.sources?.[0]?.type || "Unknown"}
+          </p>
+        </div>
+
+        <h4 className="text-2xl font-black italic uppercase tracking-tighter leading-tight group-hover:text-blue-400 transition-colors">
+          {mount.name}
+        </h4>
+
+        <div className="flex items-center justify-between pt-4 border-t border-white/5">
+          <div>
+            <p className="text-[9px] uppercase tracking-widest text-slate-600 font-bold mb-1">
+              Global Ownership
+            </p>
+            <p className="text-sm font-bold text-slate-300">{mount.owned}</p>
+          </div>
+          <div className="text-right">
+            <p className="text-[9px] uppercase tracking-widest text-slate-600 font-bold mb-1">
+              Movement
+            </p>
+            <p className="text-sm font-bold text-slate-300">{mount.movement}</p>
           </div>
         </div>
       </div>
-    </>
+    </Link>
   );
 }
 

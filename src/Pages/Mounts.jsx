@@ -48,12 +48,12 @@ function Mounts() {
       SB: { min: 4.0, max: 5.0, title: "Stormblood" },
       ShB: { min: 5.0, max: 6.0, title: "Shadowbringers" },
       EW: { min: 6.0, max: 7.0, title: "Endwalker" },
-      DT: {min: 7.0, max: 8.0, title: "Dawntrail"}
+      DT: { min: 7.0, max: 8.0, title: "Dawntrail" },
     };
 
     const defaultFilter = {
       ALL: "All", // Default filter option
-      title: "All" , // Default filter title
+      title: "All", // Default filter title
     };
 
     if (filter in expansions) {
@@ -90,7 +90,7 @@ function Mounts() {
   async function handleSearch(query) {
     try {
       const { data } = await axios.get(
-        `https://ffxivcollect.com/api/mounts?name_en_end=${query}`
+        `https://ffxivcollect.com/api/mounts?name_en_end=${query}`,
       );
 
       if (data.results.length === 0) {
@@ -112,38 +112,45 @@ function Mounts() {
   };
 
   return (
-    <>
-      <div className="container">
-        <div className="row">
-          <div className="mounts__header">
-            <h2 class="mounts__header--title">
-              {fitlerTitle} <span class="secondary"> Mounts </span>
-            </h2>
-            <MountFilter onFilterChange={handleFilterChange} />
-          </div>
-          <Searchbar onSearch={showSearchResults} />
-          <div className="mounts__list">
-            {loading
-              ? Array.from({ length: 10 }).map((_, index) => (
-                  <MountSkeleton key={index} />
-                ))
-              : filteredMounts
-                  .slice(0, displayCount)
-                  .map((mount) => <Mount mount={mount} key={mount.id} />)}
-          </div>
-          {displayCount < filteredMounts.length && (
-            <div className="button__wrapper">
-              <button
-                className="show-more button__arrow"
-                onClick={handleShowMore}
-              >
-                Show More!
-              </button>
-            </div>
-          )}
+    <main className="min-h-screen bg-[#050505] text-white p-6 lg:p-12 relative overflow-hidden flex justify-center">
+      {/* Ambient Background Glow */}
+      <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-900/10 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="w-full max-w-7xl mx-auto relative z-10">
+        <div className="mounts__header mb-12">
+          <h2 className="text-5xl lg:text-7xl font-black italic uppercase tracking-tighter mb-4">
+            {fitlerTitle} <span className="text-blue-500">Mounts</span>
+          </h2>
+          {/* We can style the MountFilter next to match this glass look */}
+          <MountFilter onFilterChange={handleFilterChange} />
         </div>
+
+        <div className="mb-12">
+          <Searchbar onSearch={showSearchResults} />
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {loading
+            ? Array.from({ length: 12 }).map((_, index) => (
+                <MountSkeleton key={index} />
+              ))
+            : filteredMounts
+                .slice(0, displayCount)
+                .map((mount) => <Mount mount={mount} key={mount.id} />)}
+        </div>
+
+        {displayCount < filteredMounts.length && (
+          <div className="flex justify-center mt-16">
+            <button
+              className="bg-white/5 backdrop-blur-md border border-white/10 text-white px-12 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white/10 transition-all"
+              onClick={handleShowMore}
+            >
+              Load More Intel
+            </button>
+          </div>
+        )}
       </div>
-    </>
+    </main>
   );
 }
 
