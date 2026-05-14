@@ -3,11 +3,8 @@ import typeicon from "../assets/ff14icon.png";
 import { Link } from "react-router-dom";
 
 function Mount({ mount }) {
-    
-
   return (
     <>
-    
       <div className="mounts__card">
         <figure className="mounts__img--wrapper">
           <img className="mounts__img" src={mount.image} alt="" />
@@ -15,11 +12,13 @@ function Mount({ mount }) {
         <div className="mounts__content--wrapper">
           <div className="mounts__content">
             <Link to={`/mounts/${mount.id}`} className="link__hover--effect">
-            <h4 className="mounts__title">{mount.name}</h4>
+              <h4 className="mounts__title">{mount.name}</h4>
             </Link>
             <div className="mounts__source--wrapper">
               <img className="mounts__source--img" src={typeicon} alt="" />
-              <p className="mounts__source">{mount.sources[0].type}</p>
+              <p className="mounts__source">
+                {mount.sources?.[0]?.type || "Unknown Source"}
+              </p>
             </div>
             <div className="mounts__tags">
               <p className="mounts__patch">Patch:{mount.patch}</p>
