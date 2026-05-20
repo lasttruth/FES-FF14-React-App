@@ -3,13 +3,20 @@ import { useParams, useNavigate } from "react-router-dom";
 import typeicon from "../assets/ff14icon.png";
 import axios from "axios";
 import { getRarity } from "../utils/rarity";
+import { isMountCollected, toggleMountCollection } from "../utils/tracker";
 import { motion } from "framer-motion";
 
 function Mountsmount() {
   const [mount, setMount] = useState(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
+  const [isCollected, setIsCollected] = useState(false);
   const navigate = useNavigate();
+
+  const handleTrackToggle = () => {
+    toggleMountCollection(mount.id);
+    setIsCollected(!isCollected);
+  };
 
   async function renderMounts() {
     setLoading(true);
@@ -28,6 +35,12 @@ function Mountsmount() {
   useEffect(() => {
     renderMounts();
   }, [id]);
+
+  useEffect(() => {
+    if (mount) {
+      setIsCollected(isMountCollected(mount.id));
+    }
+  }, [mount]);
 
   // 1. DATA GUARD: This must come BEFORE any rarity logic
   if (loading) {
@@ -124,6 +137,17 @@ function Mountsmount() {
                     <span className="text-[10px] bg-white/5 text-slate-400 px-3 py-1 rounded-full border border-white/10 font-black tracking-widest uppercase whitespace-nowrap">
                       {mount.movement}
                     </span>
+                    {/* DYNAMIC GAMIFIED TRACKING BUTTON */}
+                    <button
+                      onClick={handleTrackToggle}
+                      className={`ml-2 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 border ${
+                        isCollected
+                          ? "bg-emerald-500/20 border-emerald-500 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+                          : "bg-white/[0.03] border-white/10 text-slate-400 hover:border-blue-500/50 hover:text-white"
+                      }`}
+                    >
+                      {isCollected ? "✓ In Inventory" : "+ Claim Mount"}
+                    </button>
                   </div>
                 </div>
               </div>

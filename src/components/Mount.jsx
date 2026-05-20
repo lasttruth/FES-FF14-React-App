@@ -3,14 +3,21 @@ import React from "react";
 import typeicon from "../assets/ff14icon.png";
 import { Link } from "react-router-dom";
 import { getRarity } from "../utils/rarity";
+import { isMountCollected } from "../utils/tracker";
 
 function Mount({ mount }) {
   const rarity = getRarity(mount.owned);
 
+  const isCollected = isMountCollected(mount.id);
+
   return (
     <Link
       to={`/mounts/${mount.id}`}
-      className={`group block bg-white/[0.03] backdrop-blur-lg border ${rarity.border} ${rarity.shadow} rounded-[2rem] overflow-hidden transition-all duration-500 hover:-translate-y-2`}
+      className={`group block bg-white/[0.03] backdrop-blur-lg border ${
+        isCollected
+          ? "border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.1)]"
+          : rarity.border
+      } rounded-[2rem] p-5 transition-all duration-300 hover:-translate-y-1 hover:bg-white/[0.06] relative overflow-hidden`}
     >
       <figure className="relative aspect-video overflow-hidden">
         <img
@@ -71,6 +78,11 @@ function Mount({ mount }) {
           </div>
         </div>
       </div>
+      {isCollected && (
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-r from-emerald-500/20 via-emerald-500/10 to-emerald-500/20 border-t border-emerald-500/30 py-1.5 text-center text-[9px] font-black uppercase tracking-[0.25em] text-emerald-400 backdrop-blur-sm shadow-[inset_0_1px_10px_rgba(16,185,129,0.1)] animate-fade-in">
+          ✓ Acquired
+        </div>
+      )}
     </Link>
   );
 }
