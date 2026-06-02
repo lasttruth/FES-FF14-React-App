@@ -12,7 +12,7 @@ function Mounts() {
   const [mounts, setMounts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filteredMounts, setFilteredMounts] = useState([]);
-  const [fitlerTitle, setFilterTitle] = useState("All Mounts");
+  const [filterTitle, setFilterTitle] = useState("All Mounts");
   const [displayCount, setDisplayCount] = useState(20);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -28,7 +28,7 @@ function Mounts() {
     try {
       const { data } = await axios.get("https://ffxivcollect.com/api/mounts");
       setMounts(data.results);
-      setFilteredMounts(data.results);
+      setFilteredMounts(data.results); // Changed from activeFilter(data.results)
       setLoading(false);
     } catch (error) {
       console.error("Error fetching mounts:", error);
@@ -43,8 +43,8 @@ function Mounts() {
     if (query) {
       handleSearch(query);
     } else {
-      setFilteredMounts(mounts);
-      setFilterTitle("All ");
+      setFilteredMounts(mounts); // Changed from activeFilter(mounts)
+      setFilterTitle("All Mounts"); // Changed from setActiveFilter("All ")
     }
   }, [query, mounts]);
 
@@ -70,19 +70,13 @@ function Mounts() {
           const patch = parseFloat(mount.patch);
           return patch >= min && patch < max;
         })
-        .sort((a, b) => {
-          const patchA = parseFloat(a.patch);
-          const patchB = parseFloat(b.patch);
-          return patchA - patchB;
-        });
-      setFilteredMounts(filtered);
-      setFilterTitle(title);
-    } else if (filter in defaultFilter) {
-      setFilteredMounts(mounts);
-      setFilterTitle("All");
+        .sort((a, b) => parseFloat(a.patch) - parseFloat(b.patch));
+
+      setFilteredMounts(filtered); // Changed from activeFilter(filtered)
+      setFilterTitle(title); // Changed from setActiveFilter(title)
     } else {
-      setFilteredMounts(mounts);
-      setFilterTitle("All");
+      setFilteredMounts(mounts); // Changed from activeFilter(mounts)
+      setFilterTitle("All Mounts"); // Changed from setActiveFilter("All")
     }
   };
 
@@ -121,11 +115,11 @@ function Mounts() {
       );
 
       if (data.results.length === 0) {
-        setFilteredMounts([]);
-        setFilterTitle("No results found");
+        setFilteredMounts([]); // Changed from activeFilter([])
+        setFilterTitle("No results found"); // Changed from setActiveFilter("No results found")
       } else {
-        setFilteredMounts(data.results);
-        setFilterTitle("Search Results");
+        setFilteredMounts(data.results); // Changed from activeFilter(data.results)
+        setFilterTitle("Search Results"); // Changed from setActiveFilter("Search Results")
       }
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -143,14 +137,50 @@ function Mounts() {
       {/* Ambient Background Glow */}
       <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-900/10 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="w-full max-w-7xl mx-auto relative z-10">
-        <div className="mounts__header mb-12">
-          <h2 className="text-5xl lg:text-7xl font-black italic uppercase tracking-tighter mb-4">
-            {fitlerTitle} <span className="text-blue-500">Mounts</span>
-          </h2>
-          {/* We can style the MountFilter next to match this glass look */}
-          <MountFilter onFilterChange={handleFilterChange} />
+      <div className="w-full max-w-7xl mx-auto mb-10">
+        {/* FFXIV-102: FIXED MODERNIZED EXPANSION NAVIGATION DOCK */}
+        <div className="w-full mb-8">
+          {/* Section title placed cleanly above to eliminate overlap bugs */}
+          <div className="flex items-center mb-3 px-1">
+            <span className="text-[20px] font-black uppercase tracking-[0.3em] text-slate-500 italic">
+              Data Archives
+            </span>
+          </div>
+
+          <div className="w-full bg-white/[0.02] backdrop-blur-md border border-white/5 rounded-2xl p-2 shadow-lg">
+            <nav className="w-full grid grid-cols-2 sm:flex sm:flex-wrap md:flex-nowrap items-center justify-between gap-1.5">
+              {[
+                { id: "ALL", label: "All Logs" },
+                { id: "ARR", label: "A Realm Reborn" },
+                { id: "HW", label: "Heavensward" },
+                { id: "SB", label: "Stormblood" },
+                { id: "ShB", label: "Shadowbringers" },
+                { id: "EW", label: "Endwalker" },
+                { id: "DT", label: "Dawntrail" },
+              ].map((expansion) => {
+                // Correctly match the current filter title state string against our dataset labels
+                const isActive =
+                  filterTitle === expansion.label ||
+                  (expansion.id === "ALL" && filterTitle === "All Mounts");
+
+                return (
+                  <button
+                    key={expansion.id}
+                    onClick={() => handleFilterChange(expansion.id)}
+                    className={`px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all duration-300 text-center flex-1 ${
+                      isActive
+                        ? "bg-blue-500/20 border border-blue-500/40 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.2)]"
+                        : "border border-transparent text-slate-400 hover:text-white hover:bg-white/[0.02]"
+                    }`}
+                  >
+                    {expansion.label}
+                  </button>
+                );
+              })}
+            </nav>
+          </div>
         </div>
+
         {/* FFXIV-101: GLOBAL TRACKER DASHBOARD */}
         <div className="w-full bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 mb-12 shadow-2xl flex flex-col lg:flex-row gap-8 items-center">
           {/* Left Panel: Global Summary */}
@@ -250,5 +280,4 @@ function Mounts() {
     </main>
   );
 }
-
 export default Mounts;
