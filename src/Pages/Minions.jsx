@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import MinionCard from "../components/MinionCard"; // We will build this in Step 3
-import Searchbar from "../UI/Searchbar";
 import MountSkeleton from "../UI/MountSkeleton";
 import { getCollectedMinions } from "../utils/tracker";
 import { getRarity } from "../utils/rarity";

@@ -1,8 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Mount from "../components/Mount";
-import MountFilter from "../components/MountFilter";
-import Searchbar from "../UI/Searchbar";
 import MountSkeleton from "../UI/MountSkeleton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getCollectedMounts } from "../utils/tracker";

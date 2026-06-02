@@ -49,9 +49,9 @@ function CollectionSearch({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full block">
+    <form onSubmit={handleSubmit} className="w-full block mb-8">
       {/* FIXED CONTAINER: Changed background from solid tan/gold to premium dark glass */}
-      <div className="relative flex items-center w-full bg-white/[0.02] backdrop-blur-md border border-white/5 rounded-2xl p-2 shadow-lg">
+      <div className="relative flex items-center bg-white/[0.02] backdrop-blur-md border border-white/5 rounded-2xl p-2 shadow-lg">
         {/* Search Input Icon */}
         <div className="pl-4 pr-2 text-slate-500 pointer-events-none">
           <svg
