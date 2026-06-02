@@ -8,6 +8,11 @@ function Header() {
   // Helper to highlight the active link
   const isActive = (path) => location.pathname === path;
 
+  const navLinks = [
+    { path: "/mounts", label: "Mounts" },
+    { path: "/minions", label: "Minions" }, // FFXIV-103: Added Minions target entry
+  ];
+
   return (
     <nav className="sticky top-0 z-50 w-full px-6 py-4 flex justify-center">
       {/* Glassmorphic Nav Bar */}
@@ -29,6 +34,7 @@ function Header() {
           {[
             { name: "Home", path: "/" },
             { name: "Mounts", path: "/mounts" },
+            { name: "Minions", path: "/minions" },
           ].map((link) => (
             <li key={link.path}>
               <Link

@@ -3,6 +3,7 @@ import Home from "./Pages/Home";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Mounts from "./Pages/Mounts";
+import Minions from "./Pages/Minions";
 import MountInfo from "./Pages/MountInfo";
 
 function App() {
@@ -12,8 +13,9 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          <Route path="mounts" element={<Mounts/>}></Route>
-          <Route path='/mounts/:id' element={<MountInfo/>}></Route>
+          <Route path="mounts" element={<Mounts />}></Route>
+          <Route path="/mounts/:id" element={<MountInfo />}></Route>
+          <Route path="/minions" element={<Minions />} />
         </Routes>
         <Footer />
       </div>

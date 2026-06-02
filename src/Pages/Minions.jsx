@@ -1,57 +1,76 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import Mount from "../components/Mount";
-import MountFilter from "../components/MountFilter";
+import { useLocation, useNavigate } from "react-router-dom";
+import MinionCard from "../components/MinionCard"; // We will build this in Step 3
 import Searchbar from "../UI/Searchbar";
 import MountSkeleton from "../UI/MountSkeleton";
-import { useLocation, useNavigate } from "react-router-dom";
-import { getCollectedMounts } from "../utils/tracker";
+import { getCollectedMinions } from "../utils/tracker";
 import { getRarity } from "../utils/rarity";
 import CollectionNav from "../components/CollectionNav";
 import CollectionDashboard from "../components/CollectionDashboard";
 import CollectionSearch from "../components/CollectionSearch";
 
-function Mounts() {
-  const [mounts, setMounts] = useState([]);
+function Minions() {
+  const [minions, setMinions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filteredMounts, setFilteredMounts] = useState([]);
-  const [filterTitle, setFilterTitle] = useState("All Mounts");
+  const [filteredMinions, setFilteredMinions] = useState([]);
+  const [filterTitle, setFilterTitle] = useState("All Minions");
   const [displayCount, setDisplayCount] = useState(20);
+
   const location = useLocation();
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get("name_en_end");
-  const navigate = useNavigate();
-  const collectedIds = getCollectedMounts(); // e.g., ["444", "12"]
-  const totalAvailable = mounts.length;
+
+  const collectedIds = getCollectedMinions();
+  const totalAvailable = minions.length;
   const totalOwned = collectedIds.length;
   const globalPercentage =
     totalAvailable > 0 ? ((totalOwned / totalAvailable) * 100).toFixed(1) : 0;
 
-  async function fetchMounts() {
+  async function fetchMinions() {
     try {
-      const { data } = await axios.get("https://ffxivcollect.com/api/mounts");
-      setMounts(data.results);
-      setFilteredMounts(data.results); // Changed from activeFilter(data.results)
+      const { data } = await axios.get("https://ffxivcollect.com/api/minions");
+      setMinions(data.results);
+      setFilteredMinions(data.results);
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching mounts:", error);
+      console.error("Error fetching minions:", error);
     }
   }
 
+  const handleFilterChange = (filter) => {
+    filterMinions(filter); //  Correct: Calls your filter engine function
+  };
+
+  const handleShowMore = () => {
+    setDisplayCount(displayCount + 20);
+  };
+
+  const showSearchResults = (query) => {
+    navigate(`/minions?name_en_end=${query}`);
+  };
+
   useEffect(() => {
-    fetchMounts();
+    fetchMinions();
   }, []);
 
   useEffect(() => {
     if (query) {
-      handleSearch(query);
+      // If there's an active name parameter, filter down to matches
+      const searchFiltered = minions.filter((minion) =>
+        minion.name.toLowerCase().includes(query.toLowerCase()),
+      );
+      setFilteredMinions(searchFiltered);
+      setFilterTitle("Search Results");
     } else {
-      setFilteredMounts(mounts); // Changed from activeFilter(mounts)
-      setFilterTitle("All Mounts"); // Changed from setActiveFilter("All ")
+      // Otherwise reset grid to standard state
+      setFilteredMinions(minions);
+      setFilterTitle("All Minions");
     }
-  }, [query, mounts]);
+  }, [query, minions]);
 
-  const filterMounts = (filter) => {
+  const filterMinions = (filter) => {
     const expansions = {
       ARR: { min: 2.0, max: 3.0, title: "A Realm Reborn" },
       HW: { min: 3.0, max: 4.0, title: "Heavensward" },
@@ -68,51 +87,19 @@ function Mounts() {
 
     if (filter in expansions) {
       const { min, max, title } = expansions[filter];
-      const filtered = mounts
-        .filter((mount) => {
-          const patch = parseFloat(mount.patch);
+      const filtered = minions
+        .filter((minion) => {
+          const patch = parseFloat(minion.patch);
           return patch >= min && patch < max;
         })
         .sort((a, b) => parseFloat(a.patch) - parseFloat(b.patch));
 
-      setFilteredMounts(filtered); // Changed from activeFilter(filtered)
+      setFilteredMinions(filtered); // Changed from activeFilter(filtered)
       setFilterTitle(title); // Changed from setActiveFilter(title)
     } else {
-      setFilteredMounts(mounts); // Changed from activeFilter(mounts)
-      setFilterTitle("All Mounts"); // Changed from setActiveFilter("All")
+      setFilteredMinions(minions); // Changed from activeFilter(minions)
+      setFilterTitle("All minions"); // Changed from setActiveFilter("All")
     }
-  };
-
-  const handleFilterChange = (filter) => {
-    filterMounts(filter);
-  };
-
-  const handleShowMore = () => {
-    setDisplayCount(displayCount + 20);
-  };
-
-  async function handleSearch(query) {
-    try {
-      const { data } = await axios.get(
-        `https://ffxivcollect.com/api/mounts?name_en_end=${query}`,
-      );
-
-      if (data.results.length === 0) {
-        setFilteredMounts([]); // Changed from activeFilter([])
-        setFilterTitle("No results found"); // Changed from setActiveFilter("No results found")
-      } else {
-        setFilteredMounts(data.results); // Changed from activeFilter(data.results)
-        setFilterTitle("Search Results"); // Changed from setActiveFilter("Search Results")
-      }
-    } catch (error) {
-      console.error("Error fetching search results:", error);
-      // Handle error gracefully, e.g., display an error message
-    }
-  }
-
-  //to change the URL to avoid a refresh bug
-  const showSearchResults = (query) => {
-    navigate(`/mounts?name_en_end=${query}`);
   };
 
   return (
@@ -125,7 +112,7 @@ function Mounts() {
         <div className="w-full mb-8">
           <div className="flex items-center mb-3 px-1">
             <span className="text-[20px] font-black uppercase tracking-[0.3em] text-slate-500 italic">
-              Data Archives
+              Minion Archives
             </span>
           </div>
 
@@ -133,39 +120,41 @@ function Mounts() {
           <CollectionNav
             activeTitle={filterTitle}
             onFilterChange={handleFilterChange}
-            allLogsLabel="All Logs"
+            allLogsLabel="All Minions"
           />
         </div>
 
         {/* 2. REUSABLE STATISTICS DASHBOARD */}
         <CollectionDashboard
-          dataArray={mounts}
+          dataArray={minions}
           collectedIds={collectedIds}
           getRarity={getRarity}
-          overviewTitle="Stable Overview"
+          overviewTitle="Vault Overview"
         />
 
         {/* 3. SEARCH BAR */}
         <CollectionSearch
-          dataArray={mounts}
-          setFilteredData={setFilteredMounts}
+          dataArray={minions}
+          setFilteredData={setFilteredMinions}
           setFilterTitle={setFilterTitle}
-          basePath="/mounts"
+          basePath="/minions"
         />
 
         {/* 4. CARDS GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {loading
             ? Array.from({ length: 12 }).map((_, index) => (
-                <MountSkeleton key={index} />
+                <minionSkeleton key={index} />
               ))
-            : filteredMounts
+            : filteredMinions
                 .slice(0, displayCount)
-                .map((mount) => <Mount mount={mount} key={mount.id} />)}
+                .map((minion) => (
+                  <MinionCard minion={minion} key={minion.id} />
+                ))}
         </div>
 
         {/* Load More Button Container */}
-        {displayCount < filteredMounts.length && (
+        {displayCount < filteredMinions.length && (
           <div className="flex justify-center mt-16">
             <button
               className="bg-white/5 backdrop-blur-md border border-white/10 text-white px-12 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white/10 transition-all"
@@ -179,4 +168,5 @@ function Mounts() {
     </main>
   );
 }
-export default Mounts;
+
+export default Minions;
